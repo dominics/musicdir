@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License along with
 # Musicdir (see COPYING).  If not, see <http://www.gnu.org/licenses/>.
 
+import musicdir
 import musicdir.application
 import logging
 import argparse
@@ -63,7 +64,7 @@ def common_optional(parser):
 parser.add_argument(
     '--version',
     action='version',
-    version='0.0.1'
+    version=musicdir.version
 )
 
 common_optional(parser)
