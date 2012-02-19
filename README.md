@@ -49,11 +49,25 @@ with a simple `musicdir update --input=~/Music/iphone --output=~/Music/awesome`
 
  - Python 2.7+
  - Mutagen version 1.10.1 or above
-     - In Ubuntu/Debian, provided by python-mutagen package
  - argparse
-     - In Ubuntu/Debian, provided by python-argparse package
+ - A filesystem that supports os.symlink
 
-## Getting Started in Debian/Ubuntu
+Mutagen is in PyPI (pip install mutagen). Argparse, from 2.7, is in the
+Python standard library.
+
+### Ubuntu/Debian
+
+```
+# apt-get install python2.7 python-argparse python-mutagen
+```
+
+### Mac/OS X
+
+```
+# port install python27 py27-mutagen
+```
+
+## Getting Started
 
 First, install from source using the distutils setup.py:
 
@@ -67,10 +81,10 @@ $ cd musicdir
 This should put musicdir in /usr/local/bin. Use `musicdir --help` to get
 information about the available subcommands.
 
-Check example.musicdir.cfg for an example config file. You should move this
-file to ~/.musicdir.cfg or /etc/musicdir.cfg. Configuration options specified
-in files will be used as defaults, but they may be overriden on the command
-line.
+Check [example.musicdir.cfg](https://github.com/dominics/musicdir/blob/master/example.musicdir.cfg)
+for an example config file. You should move this file to ~/.musicdir.cfg or
+/etc/musicdir.cfg. Configuration options specified in files will be used as
+defaults, but they may be overriden on the command line.
 
 The command line interface works like this:
 
@@ -119,5 +133,5 @@ with rsynced input directories.
   - [Beetfs](http://code.google.com/p/beetfs/)
   - [id3fs](http://erislabs.net/ianb/projects/id3fs/)
   - [pytagfs](http://www.pytagsfs.org/)
-      - Great, based on mutagent, and widely available
+      - Great, based on Mutagen, and widely available
       - Doesn't persist metadata, so it scans all music on startup
