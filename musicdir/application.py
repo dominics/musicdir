@@ -37,7 +37,7 @@ class Application:
     def __init__(self, parser = None):
         if parser is None:
             parser = ConfigParser.SafeConfigParser()
-            parser.readfp(open('defaults.cfg'))
+            parser.readfp(open(os.path.join(os.path.dirname(__file__), 'data/defaults.cfg')))
             parser.read(['/etc/musicdir.cfg',
                 os.path.expanduser('~/.musicdir.cfg')])
         self.parser = parser

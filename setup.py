@@ -16,6 +16,7 @@ setup(
         author_email     = 'dominic@varspool.com',
         url              = 'http://github.com/dominics/musicdir',
         packages         = ['musicdir'],
+        package_data     = {'musicdir': ['data/*.cfg']},
         scripts          = ['scripts/musicdir'],
         requires         = ['mutagen (>=1.10.1)', 'argparse', 'ConfigParser']
      )
