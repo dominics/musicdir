@@ -34,6 +34,7 @@ line.
 The command line interface works like this:
 
 ```
+$ musicdir --help
 usage: musicdir [-h] [--version] [--output OUTPUT] [--input INPUT] [--verbose]
                 [--quiet]
                 action ...
