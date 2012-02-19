@@ -18,7 +18,11 @@
 # Musicdir (see COPYING).  If not, see <http://www.gnu.org/licenses/>.
 
 import musicdir.application
+import logging
 import argparse
+
+log = logging.getLogger('musicdir')
+log.addHandler(logging.StreamHandler())
 
 app = musicdir.application.Application()
 
@@ -31,10 +35,22 @@ parser = argparse.ArgumentParser(
 # Optional arguments
 def common_optional(parser):
     parser.add_argument(
+        '--output', '-o',
+        action="store",
+        type=str,
+        help="The output directory where symlinks will be created",
+    )
+    parser.add_argument(
+        '--input', '-i',
+        action="append",
+        type=str,
+        help="An optional directory that contains source music, if not \
+              provided, your config file settings will be used."
+    )
+    parser.add_argument(
         "--verbose", "-v",
         action="count",
         help="Be loud (can be supplied multiple times)",
-        default=0
     )
 
 parser.add_argument(
@@ -42,6 +58,8 @@ parser.add_argument(
     action='version',
     version='0.0.1'
 )
+
+common_optional(parser)
 
 # Actions
 sub = parser.add_subparsers(
@@ -56,19 +74,6 @@ parser_update = sub.add_parser(
    help='Updates the output directory',
    description='Updates the output directory',
 )
-parser_update.add_argument(
-    '--output', '-o',
-    action="store",
-    type=str,
-    help="The action to take",
-)
-parser_update.add_argument(
-   '--input', '-i',
-   action="append",
-   type=str,
-   help="An optional directory that contains source music, if not \
-           provided, your config file settings will be used."
-)
 
 common_optional(parser_update)
 
@@ -81,6 +86,15 @@ parser_cleanup = sub.add_parser(
 
 common_optional(parser_cleanup)
 
+## Cleanup
+parser_config = sub.add_parser(
+    'config',
+    help='Prints the current configuration',
+    description='Prints the current configuration'
+)
+
+common_optional(parser_config)
+
 # Finally, parse
 app.setArgumentNamespace(parser.parse_args())
-app.executeAction()
+app.execute()

@@ -12,21 +12,27 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # Musicdir (see COPYING).  If not, see <http://www.gnu.org/licenses/>.
-#
-# See README.md for usage.
 
 import os
 import os.path
+import logging
 import fnmatch
-from mutagen.easyid3 import EasyID3
-import ConfigParser
 from pprint import pprint
 
+import ConfigParser
+
+import musicdir.actions
+
+log = logging.getLogger('musicdir')
 
 class Application:
+    """ The main musicdir application
+
+    This class reads musicdir configuration files, merges configuration
+    passed in from the command line, and runs action methods """
+
     parser = None
-    arguments = None
-    action = None
+    config = {}
 
     def __init__(self, parser = None):
         if parser is None:
@@ -35,45 +41,64 @@ class Application:
             parser.read(['/etc/musicdir.cfg',
                 os.path.expanduser('~/.musicdir.cfg')])
         self.parser = parser
+        self.updateConfig()
 
     def getConfigParser(self):
         return self.parser
 
     def setArgumentNamespace(self, ns):
-        self.arguments = vars(ns)
+        """ Merges arguments from argparse into the self.parser
+            configparser """
+        arguments = vars(ns)
 
-        for (key, value) in self.arguments.items():
-            if key == 'input' and value:
-                i = 0
-                for directory in value:
-                    self.parser.set('input', 'cli' + str(i), directory)
-                    i = i + 1
-            else:
-                self.parser.set('general', key, str(value))
+        for (key, value) in arguments.items():
+            if value:
+                if key == 'input':
+                    i = 0
+                    for directory in value:
+                        self.parser.set('input', 'cli' + str(i), directory)
+                        i = i + 1
+                else:
+                    log.debug("Command line argument: %s = %s" % (key,
+                        str(value)))
+                    self.parser.set('general', key, str(value))
 
-    def executeAction(self):
-        print "Executing ", self.action
-        pprint(self.parser.items('general'))
-        pprint(self.parser.items('input'))
+        self.updateConfig()
 
+    def updateConfig(self):
+        self.config = {
+            key: value for (key, value) in self.parser.items('general')
+        }
+        for key in ['output']:
+            self.config[key] = os.path.expanduser(self.config.get(key))
+        self.config['input'] = [
+            os.path.expanduser(value)
+            for (key, value)
+            in self.parser.items('input')
+        ]
+        self.setupLogging()
 
-# A set of music directories (musicdir should never write to these)
-home = os.environ['HOME']
-sources = [
-            os.path.join(home, 'Music/dagger'),
-          #  os.path.join(home, 'Music/iphone')
-          ]
+    def validateConfig(self):
+        if not self.config.get('input'):
+            raise "No inputs specified"
+        if not self.config.get('output'):
+            raise "No output specified"
 
+    def executeAction(self, action):
+        print "Executing ", action
+        method = getattr(musicdir.actions, action)
+        method(self.config)
 
-# Output directory
-root = os.path.join(home, 'Music/indexed')
+    def execute(self):
+        self.validateConfig()
+        self.executeAction(self.config['action'])
 
-# Input patterns
-audio_pattern = '*.mp3'
-image_pattern = '*.jpg'
+    def setupLogging(self):
+        verbose = int(self.config.get('verbose', 0))
+        if verbose > 1:
+            log.setLevel(logging.DEBUG)
+        elif verbose > 0:
+            log.setLevel(logging.INFO)
+        else:
+            log.setLevel(Logging.WARNING)
 
-# Output patterns
-if os.path.supports_unicode_filenames:
-    template = unicode("{artist}/{album}/{track} - {title}{extension}")
-else:
-    template = "{artist}/{album}/{track} - {title}{extension}"
