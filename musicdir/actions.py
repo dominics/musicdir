@@ -21,18 +21,12 @@ import os.path
 log = logging.getLogger('musicdir')
 
 def cleanup(config):
-    """ Cleans up the output directory by removing symlinks not output on this
-    run. Real files are skipped. """
-    print "Cleaning up: ", root
-#    for r, dirs, files in os.walk(root):
-#        print dirs
-#        print files
-#        print r
+    None
 
 def update(config):
     mapping = {}
 
-    print "Updating audio links"
+    log.info("Updating audio links")
     for filename in util.audio_input(config):
         filename_dir = os.path.dirname(filename)
         new = util.audio_filename(config, filename)
@@ -45,7 +39,7 @@ def update(config):
         if filename_dir not in mapping:
             mapping[filename_dir] = new_dir
 
-    print "Updating art links"
+    log.info("Updating art links")
     for filename in util.art_input(config):
         new = util.art_filename(config, filename, mapping)
         new_dir = os.path.dirname(new)

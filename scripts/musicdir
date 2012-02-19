@@ -50,13 +50,14 @@ def common_optional(parser):
     parser.add_argument(
         "--verbose", "-v",
         action="count",
-        help="Be loud (can be supplied multiple times)",
+        help="Be louder (can be supplied multiple times)",
     )
     parser.add_argument(
         "--quiet", "-q",
         action="store_const",
         dest="verbose",
-        const="0"
+        const="0",
+        help="Be quiet (don't output anything, overide verbose in config files)"
     )
 
 parser.add_argument(
@@ -84,15 +85,15 @@ parser_update = sub.add_parser(
 common_optional(parser_update)
 
 ## Cleanup
-parser_cleanup = sub.add_parser(
-    'cleanup',
-    help='Cleans the output directory of broken symlinks and duplicate music',
-    description='Cleans the output directory of broken symlinks'
-)
+#parser_cleanup = sub.add_parser(
+#    'cleanup',
+#    help='Cleans the output directory of broken symlinks and duplicate music',
+#    description='Cleans the output directory of broken symlinks'
+#)
+#
+#common_optional(parser_cleanup)
 
-common_optional(parser_cleanup)
-
-## Cleanup
+## Config
 parser_config = sub.add_parser(
     'config',
     help='Prints the current configuration',

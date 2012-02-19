@@ -80,12 +80,18 @@ def art_info(filename, mapping):
     return info
 
 def audio_filename(config, filename):
+    info = audio_info(filename)
+
+    template = config['audio_template']
+    if info['albumartist'] == 'Various Artists':
+        template = config.get('audio_various_template', template)
+
     return os.path.normcase(
         os.path.normpath(
             os.path.join(
                 config['output'],
-                unicode(config['audio_template']).format(
-                    **audio_info(filename)
+                unicode(template).format(
+                    **info
                 )
             )
         )
