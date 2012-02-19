@@ -59,8 +59,6 @@ class Application:
                         self.parser.set('input', 'cli' + str(i), directory)
                         i = i + 1
                 else:
-                    log.debug("Command line argument: %s = %s" % (key,
-                        str(value)))
                     self.parser.set('general', key, str(value))
 
         self.updateConfig()
@@ -78,21 +76,6 @@ class Application:
         ]
         self.setupLogging()
 
-    def validateConfig(self):
-        if not self.config.get('input'):
-            raise "No inputs specified"
-        if not self.config.get('output'):
-            raise "No output specified"
-
-    def executeAction(self, action):
-        print "Executing ", action
-        method = getattr(musicdir.actions, action)
-        method(self.config)
-
-    def execute(self):
-        self.validateConfig()
-        self.executeAction(self.config['action'])
-
     def setupLogging(self):
         verbose = int(self.config.get('verbose', 0))
         if verbose > 1:
@@ -100,5 +83,21 @@ class Application:
         elif verbose > 0:
             log.setLevel(logging.INFO)
         else:
-            log.setLevel(Logging.WARNING)
+            log.setLevel(logging.WARNING)
 
+    def validateConfig(self):
+        log.debug(self.config)
+
+        if not self.config.get('input'):
+            raise "No inputs specified"
+        if not self.config.get('output'):
+            raise "No output specified"
+
+    def executeAction(self, action):
+        log.info("Executing %s action" % (action))
+        method = getattr(musicdir.actions, action)
+        method(self.config)
+
+    def execute(self):
+        self.validateConfig()
+        self.executeAction(self.config['action'])

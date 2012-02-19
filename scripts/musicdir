@@ -52,6 +52,12 @@ def common_optional(parser):
         action="count",
         help="Be loud (can be supplied multiple times)",
     )
+    parser.add_argument(
+        "--quiet", "-q",
+        action="store_const",
+        dest="verbose",
+        const="0"
+    )
 
 parser.add_argument(
     '--version',

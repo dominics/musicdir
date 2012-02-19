@@ -30,39 +30,31 @@ def cleanup(config):
 #        print r
 
 def update(config):
-    print "Updating output dirs"
+    mapping = {}
 
+    print "Updating audio links"
     for filename in util.audio_input(config):
-        new = util.template_filename(config, filename)
-        util.ensure_directories(os.path.dirname(new))
+        filename_dir = os.path.dirname(filename)
+        new = util.audio_filename(config, filename)
+        new_dir = os.path.dirname(new)
+
+        util.ensure_directories(new_dir)
         util.link(filename, new)
 
-        log.debug("Linking %s to %s" % (new, filename))
+        # Keep a mapping to provide %{audio_dir} to art_template
+        if filename_dir not in mapping:
+            mapping[filename_dir] = new_dir
+
+    print "Updating art links"
+    for filename in util.art_input(config):
+        new = util.art_filename(config, filename, mapping)
+        new_dir = os.path.dirname(new)
+
+        util.ensure_directories(new_dir)
+        util.link(filename, new)
+
+    log.info("Ensured %d links in place" % (util.get_link_count()))
+
 
 def config(config):
     pprint(config)
-
-## Old code below
-
-def index_audio(filename):
-
-    return directory
-
-def index_image(filename, destination):
-    result = os.path.join(destination, os.path.basename(filename))
-    if not os.path.exists(result):
-        os.symlink(filename, result)
-
-def index():
-    for source in sources:
-        print "Reindexing: ", source
-        for r, dirs, files in os.walk(source):
-            if len(files) == 0:
-                continue
-
-            destination = None
-            for f in fnmatch.filter(files, audio_pattern):
-                destination = index_audio(os.path.join(r, f))
-            for f in fnmatch.filter(files, image_pattern):
-                index_image(os.path.join(r, f), destination)
-
