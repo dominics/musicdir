@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+# vim: set ts=4 sw=4 tw=79 et :
+#
+# Musicdir CLI Interface
+#
+# Takes a set of source directories, reads the ID3 tags of MP3 files contained
+# therein, creates a symlinked mirrored directory tree of the files nicely
+# renamed.
+#
+# Copyright 2012 Dominic Scheirlinck <dominic@varspool.com>
+#
+# Musicdir is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your argument) any later
+# version.
+#
+# You should have received a copy of the GNU General Public License along with
+# Musicdir (see COPYING).  If not, see <http://www.gnu.org/licenses/>.
+
+import musicdir.application
+import argparse
+
+app = musicdir.application.Application()
+
+parser = argparse.ArgumentParser(
+    description="Tool for mirroring ID3-tagged music with renamed symlinks",
+    epilog="Comments to dominic@varspool.com or \
+            http://github.com/dominics/musicdir. GPL3+.",
+)
+
+# Optional arguments
+def common_optional(parser):
+    parser.add_argument(
+        "--verbose", "-v",
+        action="count",
+        help="Be loud (can be supplied multiple times)",
+        default=0
+    )
+
+parser.add_argument(
+    '--version',
+    action='version',
+    version='0.0.1'
+)
+
+# Actions
+sub = parser.add_subparsers(
+    title="Valid actions",
+    dest="action",
+    metavar="action"
+)
+
+## Update
+parser_update = sub.add_parser(
+   'update',
+   help='Updates the output directory',
+   description='Updates the output directory',
+)
+parser_update.add_argument(
+    '--output', '-o',
+    action="store",
+    type=str,
+    help="The action to take",
+)
+parser_update.add_argument(
+   '--input', '-i',
+   action="append",
+   type=str,
+   help="An optional directory that contains source music, if not \
+           provided, your config file settings will be used."
+)
+
+common_optional(parser_update)
+
+## Cleanup
+parser_cleanup = sub.add_parser(
+    'cleanup',
+    help='Cleans the output directory of broken symlinks and duplicate music',
+    description='Cleans the output directory of broken symlinks'
+)
+
+common_optional(parser_cleanup)
+
+# Finally, parse
+app.setArgumentNamespace(parser.parse_args())
+app.executeAction()
