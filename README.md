@@ -15,12 +15,12 @@ of MP3s.
 
 First, install from source using the distutils setup.py:
 
-{{{
+```
 # apt-get install python2.7 python-argparse python-mutagen
 $ git clone git://github.com/dominics/musicdir.git
 $ cd musicdir
 # python setup.py install
-}}}
+```
 
 This should put musicdir in /usr/local/bin. Use `musicdir --help` to get
 information about the available subcommands.
@@ -33,6 +33,8 @@ http://github.com/dominics/musicdir
 
 ## Similar Projects
 
- - Beets
- - Beetfs
- - id3fs
+You might like to check out some of these other projects.
+
+  - Beets
+  - Beetfs
+  - id3fs
