@@ -1,3 +1,4 @@
+<!--- vim: set tw=79 sw=4 ts=4 et : -->
 # Musicdir
 
 A quick Python script I'm throwing together to aid in reorganising directories
@@ -33,8 +34,16 @@ http://github.com/dominics/musicdir
 
 ## Similar Projects
 
-You might like to check out some of these other projects.
+Mostly, musicdir differs in its symlink approach, which means it never writes
+to the input files or changes their tags. This makes musicdir nice for dealing
+with rsynced input directories.
 
-  - Beets
-  - Beetfs
-  - id3fs
+  - [Beets](http://code.google.com/p/beets/)
+      - Actually, musicdir works just fine with a beets-based tagging workflow
+      - Once [this enhancement](http://code.google.com/p/beets/issues/detail?id=64)
+         is completed, it might replace musicdir
+  - [Beetfs](http://code.google.com/p/beetfs/)
+  - [id3fs](http://erislabs.net/ianb/projects/id3fs/)
+  - [pytagfs](http://www.pytagsfs.org/)
+      - Great, based on mutagent, and widely available
+      - Doesn't persist metadata, so it scans all music on startup
