@@ -1,8 +1,49 @@
 <!--- vim: set tw=79 sw=4 ts=4 et : -->
 # Musicdir
 
-A quick Python script I'm throwing together to aid in reorganising directories
-of MP3s.
+Musicdir uses the existing ID3 tags on your music files to produce a sylinked
+mirror directory. Musicdir doesn't touch your original music files in any way.
+This is useful for dealing with iDevices that mangle filenames, and directories
+of music incrementally rsycned from elsewhere.
+
+Because the output directory is static information stored in your filesystem,
+the tag metadata is only read to produce the symlinks - on update, not every
+time you want to use or access the music. Disk usage is minimal.
+
+In short, it turns this:
+
+```
+$ tree ~/Music/iphone
+.
+├── F00
+│   ├── AAXG.mp3
+│   ├── ... and 180 other badly named files
+│   └── ZRSJ.mp3
+├── ... and fifty other directories exactly the same
+└── F49
+```
+
+into this:
+
+```
+$ tree ~/Music/awesome
+.
+├── Arcade Fire
+│   └── Neon Bible
+│       ├── 1 - Black Mirror.mp3 -> ~/Music/iphone/F02/AXCH.mp3
+│       ├── 2 - Keep the Car Running.mp3 -> ~/iphone/F36/DGOH.mp3
+│       └── [...etc...]
+├── Augie March
+│   └── Moo, You Bloody Choir
+│       ├── 1 - Moo, You Bloody Choir.mp3 -> ~/Music/iphone/F13/FMCL.mp3
+│       ├── 2 - Victoria's Secrets.mp3 -> ~/Music/iphone/F36/DGOH.mp3
+│       └── [...etc...]
+├── Ben Folds
+├── Blam Blam Blam
+└── [...etc...]
+```
+
+with a simple `musicdir update --input=~/Music/iphone --output=~/Music/awesome`
 
 ## Dependencies
 
