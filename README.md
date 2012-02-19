@@ -26,6 +26,38 @@ $ cd musicdir
 This should put musicdir in /usr/local/bin. Use `musicdir --help` to get
 information about the available subcommands.
 
+Check example.musicdir.cfg for an example config file. You should move this
+file to ~/.musicdir.cfg or /etc/musicdir.cfg. Configuration options specified
+in files will be used as defaults, but they may be overriden on the command
+line.
+
+The command line interface works like this:
+
+```
+usage: musicdir [-h] [--version] [--output OUTPUT] [--input INPUT] [--verbose]
+                [--quiet]
+                action ...
+
+Tool for mirroring ID3-tagged music with renamed symlinks
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --output OUTPUT, -o OUTPUT
+                        The output directory where symlinks will be created
+  --input INPUT, -i INPUT
+                        An optional directory that contains source music, if
+                        not provided, your config file settings will be used.
+  --verbose, -v         Be louder (can be supplied multiple times)
+  --quiet, -q           Be quiet (don't output anything, overide verbose in
+                        config files)
+
+Valid actions:
+  action
+    update              Updates the output directory
+    config              Prints the current configuration
+```
+
 ## Contact
 
 Dominic Scheirlinck <dominic@varspool.com>
