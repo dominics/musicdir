@@ -69,11 +69,10 @@ Python standard library.
 
 ## Getting Started
 
-First, install from source using the distutils setup.py:
+First, install the dependencies as above
 
 ```
-# apt-get install python2.7 python-argparse python-mutagen
-$ git clone git://github.com/dominics/musicdir.git
+$ git clone git://github.com/dominics/musicdir.git # or wget https://github.com/dominics/musicdir/tarball/v0.1.0
 $ cd musicdir
 # python setup.py install
 ```
