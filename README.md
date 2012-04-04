@@ -45,7 +45,7 @@ $ tree ~/Music/awesome
 
 with a simple `musicdir update --input=~/Music/iphone --output=~/Music/awesome`
 
-## Dependencies
+## Getting Started
 
  - Python 2.7+
  - Mutagen version 1.10.1 or above
@@ -55,21 +55,7 @@ with a simple `musicdir update --input=~/Music/iphone --output=~/Music/awesome`
 Mutagen is in PyPI (pip install mutagen). Argparse, from 2.7, is in the
 Python standard library.
 
-### Ubuntu/Debian
-
-```
-# apt-get install python2.7 python-argparse python-mutagen
-```
-
-### Mac/OS X
-
-```
-# port install python27 py27-mutagen
-```
-
-## Getting Started
-
-First, install from source using the distutils setup.py:
+### Debian/Ubuntu
 
 ```
 # apt-get install python2.7 python-argparse python-mutagen
@@ -77,6 +63,19 @@ $ git clone git://github.com/dominics/musicdir.git
 $ cd musicdir
 # python setup.py install
 ```
+
+### Apple Macintosh OSX
+
+Using Macports:
+
+```
+# port install python27 py27-mutagen
+$ git clone git://github.com/dominics/musicdir.git
+$ cd musicdir
+# python setup.py install
+```
+
+## Configuration
 
 This should put musicdir in /usr/local/bin. Use `musicdir --help` to get
 information about the available subcommands.
