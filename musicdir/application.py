@@ -67,13 +67,17 @@ class Application:
         self.config = {
             key: value for (key, value) in self.parser.items('general')
         }
+
         for key in ['output']:
-            self.config[key] = os.path.expanduser(self.config.get(key))
+            if self.config.get(key):
+                self.config[key] = os.path.expanduser(self.config.get(key))
+
         self.config['input'] = [
             os.path.expanduser(value)
             for (key, value)
             in self.parser.items('input')
         ]
+
         self.setupLogging()
 
     def setupLogging(self):
