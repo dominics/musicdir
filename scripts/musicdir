@@ -36,6 +36,12 @@ parser = argparse.ArgumentParser(
 # Optional arguments
 def common_optional(parser):
     parser.add_argument(
+        '--config', '-c',
+        action="store",
+        type=str,
+        help="A configuration file to load"
+    )
+    parser.add_argument(
         '--output', '-o',
         action="store",
         type=str,

@@ -58,6 +58,8 @@ class Application:
                     for directory in value:
                         self.parser.set('input', 'cli' + str(i), directory)
                         i = i + 1
+                elif key == 'config':
+                    self.parser.read([str(value)])
                 else:
                     self.parser.set('general', key, str(value))
 
@@ -67,6 +69,9 @@ class Application:
         self.config = {
             key: value for (key, value) in self.parser.items('general')
         }
+
+        if 'config' in self.config:
+            print "config value given"
 
         for key in ['output']:
             if self.config.get(key):
@@ -93,9 +98,9 @@ class Application:
         log.debug(self.config)
 
         if not self.config.get('input'):
-            raise "No inputs specified"
+            raise Exception("No inputs specified")
         if not self.config.get('output'):
-            raise "No output specified"
+            raise Exception("No output specified")
 
     def executeAction(self, action):
         log.info("Executing %s action" % (action))
@@ -103,5 +108,6 @@ class Application:
         method(self.config)
 
     def execute(self):
-        self.validateConfig()
+        if self.config["action"] != "config":
+            self.validateConfig()
         self.executeAction(self.config['action'])
